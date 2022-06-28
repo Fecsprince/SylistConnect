@@ -12,12 +12,12 @@ namespace WebUI.Controllers
     public class SylistManagerController : Controller
     {
 
-        private IRepository<Employee> repository = null;
+        private IRepository<Shop> repository = null;
         public SylistManagerController()
         {
-            this.repository = new Repository<Employee>();
+            this.repository = new Repository<Shop>();
         }
-        public SylistManagerController(IRepository<Employee> repository)
+        public SylistManagerController(IRepository<Shop> repository)
         {
             this.repository = repository;
         }

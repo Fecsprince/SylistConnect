@@ -12,8 +12,13 @@ namespace DomainLayer.DbEFContext
     {
 
 
-        public AppDbContext(): base("AppConnection") {}
+        public AppDbContext() : base("AppConnection") { }
 
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Shop> GetShops { get; set; }
+        public DbSet<Service> GetServices { get; set; }
+        public DbSet<Booking> GetBookings { get; set; }
+        public DbSet<Category> GetCategories { get; set; }
+        public DbSet<Product> GetProducts { get; set; }
+        public DbSet<Order> GetOrders { get; set; }
     }
 }

@@ -49,10 +49,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbEFContext\AppDbContext.cs" />
-    <Compile Include="Entities\Employee.cs" />
+    <Compile Include="Entities\Booking.cs" />
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\Order.cs" />
+    <Compile Include="Entities\Product.cs" />
+    <Compile Include="Entities\Service.cs" />
+    <Compile Include="Entities\Shop.cs" />
     <Compile Include="Migrations\202206271650071_abstract.cs" />
     <Compile Include="Migrations\202206271650071_abstract.Designer.cs">
       <DependentUpon>202206271650071_abstract.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202206281347235_models.cs" />
+    <Compile Include="Migrations\202206281347235_models.Designer.cs">
+      <DependentUpon>202206281347235_models.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +73,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202206271650071_abstract.resx">
       <DependentUpon>202206271650071_abstract.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202206281347235_models.resx">
+      <DependentUpon>202206281347235_models.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

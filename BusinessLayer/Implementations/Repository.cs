@@ -36,5 +36,43 @@ namespace BusinessLayer.Implementations
             _context.SaveChanges();
             return obj;
         }
+
+        public IEnumerable<T> GetAllRecords() 
+        {
+            return table.ToList();
+        }
+
+        public T GetRecordById(object id) 
+        {
+            //FIND RECORD FIRST
+            var dbRec = table.Find(id);
+            if (dbRec != null)
+            {
+                return dbRec;
+            }
+            else
+            {
+                return dbRec;
+            }
+        }
+
+        public int RemoveFromTable(object id)
+        {
+           var rec = table.Find(id);
+            if (rec != null)
+            {
+                table.Remove(rec);
+                _context.SaveChanges();
+                return 1;
+            }
+            return 0;
+        }
+
+        public T Update(T obj)
+        {
+            _context.Entry(obj).State = EntityState.Modified;
+            _context.SaveChanges();
+            return obj;
+        }
     }
 }

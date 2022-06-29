@@ -1,0 +1,74 @@
+﻿
+
+@model WebUI.ViewModels.CategoryViewModel
+
+
+@if (ViewBag.msg != null)
+{
+    <p id="msg" style="display:none">@ViewBag.msg</p>
+}
+
+<form id="frmCategory" class="has-validation">
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.TextBoxFor(o => o.Name, new { @class = "form-control", @placeholder = "-- Enter Category's Name--" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.TextBoxFor(o => o.Description, new { @class = "form-control", @placeholder = "-- Category description --" })
+    </div>
+
+
+
+    <div class="form-group">
+        <a href="#" class="btn btn-success" id="btnSaveUpdate">
+            @if (Model.Id > 0)
+            {<span>Update</span>}
+            else
+            { <span>Save</span>}
+        </a>
+    </div>
+
+    <div style="text-align: center;" id="loaderDiv1">
+        <img src="~/Images/load.gif" width="80" height="80" class="img-circle img-thumbnail" />
+    </div>
+</form>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#loaderDiv1").hide();
+
+        $("#btnSaveUpdate").click(function () {
+
+            $("#loaderDiv1").show();
+
+            var frmData = $("#frmCategory").serialize();
+            var data = frmData;
+
+
+            $.ajax({
+                type: "POST",
+                url: "/Category/Category",
+                data: data,
+                success: function (result) {
+                    $("#loaderDiv").hide();
+                    $("#AddEditModal").modal("hide"); //TO HIDE MODAL AFTER SAVING RECORD
+                    if (result.trim != "" || result.trim != null) { alert(result); }
+                    window.location.href = "/Category/Category";
+                }
+            })
+        })
+
+    })
+</script>
+
+
+
+

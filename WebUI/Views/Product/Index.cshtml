@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "Product";
+}
+
+<div id="bucket">
+
+    <div id="guideBucket">
+        <h2>Product List</h2>
+    </div>
+
+    @if (ViewBag.msg != null)
+    {
+        <p id="msg" style="display:none">@ViewBag.Msg</p>
+    }
+
+
+    <br />
+    <a href="@Url.Action("Create","Product")" class="btn btn-primary">New Product</a>
+    <br />
+    <br />
+    @* TABLE BELLOW IS USED TO POPULATE ALL RECORD IN DB *@
+
+    @if (ViewBag.AllProducts != null)
+    {
+        <div class="table-responsive">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Gallery</th>
+                        @*@if (User.IsInRole("Admin"))
+                            {*@
+                        <th>...</th>
+                        @* } *@
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in ViewBag.AllProducts as List<WebUI.ViewModels.ProductViewModel>)
+                    {
+                        <tr id="row_@item.Id">
+                            <td>@item.Name</td>
+                            <td>@item.Description</td>
+                            <td>@item.CategoryName</td>
+                            <td>
+                                <img class="img-thumbnail" width="30" height="30" alt="?" src="~/Uploads/Products/@item._Image1" />|
+                                <img class="img-thumbnail" width="30" height="30" alt="?" src="~/Uploads/Products/@item._Image2" />
+                            </td>
+
+                            @*@if (User.IsInRole("Admin"))
+                                {*@
+                            <td>
+                                <a href="#" class="btn btn-danger" onclick="ConfirmDeleteRecord(@item.Id)"><span class="glyphicon glyphicon-trash"></span> </a>
+                                <a href="@Url.Action("Edit","Product", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
+                            </td>
+                            @* } *@
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+
+
+
+
+
+
+    <div class="modal fade" id="DeleteModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title text-center text-info">
+                        Delete ?
+                    </h4>
+                </div>
+
+
+                <div class="modal-body">
+
+                    <h2 class="text-center text-danger">ARE YOU SURE YOU WANT TO DELETE RECORD <span id="deleteId"></span>?</h2>
+                    <input type="hidden" id="ID" />
+                    <input type="submit" id="btnDelete" onclick="DeleteRecord()" class="btn btn-danger" value="Delete" />
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var Smsg = $("#msg").text();
+        if (Smsg != "") {
+            alert(Smsg);
+        }
+    });
+
+
+    var ConfirmDeleteRecord = function (id) {
+        debugger
+        $("#ID").val(id);
+        $("#DeleteModal").modal("show");
+    }
+
+
+    var DeleteRecord = function () {
+
+        var Id = $("#ID").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Product/DeleteProduct",
+            data: { ID: Id },
+            success: function (result) {
+                if (result == "1") {
+                    $("#row_" + Id).remove();
+                    alert("Record deleted successfully!");
+                    window.location.href = "/Product/Index";
+                }
+                else {
+                    alert("Record not not deleted!");
+                    window.location.href = "/Product/Index";
+                }
+            }
+        })
+    }
+
+</script>
+

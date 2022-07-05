@@ -1,0 +1,158 @@
+﻿@model WebUI.ViewModels.ShopViewModel
+
+@{
+    ViewBag.Title = "Edit Shop";
+}
+<div id="bucket">
+    <p style="display:none" id="msg">@ViewBag.Msg</p>
+
+    <h2 id="#guideBucket">Edit Shop</h2>
+
+
+    @using (Html.BeginForm("Edit", "Shop", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.UserID)
+    <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @readonly ="readonly" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PermanantAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></div>
+                @Html.EditorFor(model => model.PermanantAddress, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.PermanantAddress, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contact1, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></div>
+                @Html.EditorFor(model => model.Contact1, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Contact1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contact2, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></div>
+                @Html.EditorFor(model => model.Contact2, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Contact2, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BookingDays, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                @Html.EditorFor(model => model.BookingDays, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.BookingDays, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ClosingHour, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-time"></span></div>
+                @Html.EditorFor(model => model.ClosingHour, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.ClosingHour, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.OpeningHour, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-time"></span></div>
+                @Html.EditorFor(model => model.OpeningHour, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.OpeningHour, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Image1, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-picture"></span></div>
+                <input type="file" id="Image1" name="Image1" class="form-control" />
+                @*@Html.EditorFor(model => model.Image1, new { htmlAttributes = new { @class = "form-control" } })*@
+            </div>
+            @Html.ValidationMessageFor(model => model.Image1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Image2, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-picture"></span></div>
+                <input type="file" id="Image2" name="Image2" class="form-control" />
+                @*@Html.EditorFor(model => model.Image2, new { htmlAttributes = new { @class = "form-control" } })*@
+            </div>
+            @Html.ValidationMessageFor(model => model.Image2, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div style="text-align: center;" id="loaderDiv1">
+        <img src="~/Images/load.gif" width="80" height="80" class="img-circle img-thumbnail" />
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+    }
+
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#loaderDiv1").hide();
+
+        var Smsg = $("#msg").text();
+        if (Smsg != "") {
+            alert(Smsg);
+        }
+
+    })
+
+    $("#btnUpdate").click(function () {
+        debugger;
+        $("#loaderDiv1").show();
+    })
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

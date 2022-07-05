@@ -21,14 +21,15 @@ namespace WebUI.Controllers
         {
             this.repository = repository;
         }
-
-
-
         #region CATEGORY CRUD
-
-        [HttpGet]
-        public ActionResult Category()
+        public ActionResult Index()
         {
+
+            if (TempData["Msg"] != null)
+            {
+                ViewBag.Msg = TempData["Msg"].ToString();
+            }
+
             try
             {
                 List<CategoryViewModel> categoryViewModels = new List<CategoryViewModel>();
@@ -62,146 +63,132 @@ namespace WebUI.Controllers
         }
 
 
+
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Category(CategoryViewModel model)
+        public JsonResult Create(CategoryViewModel model)
         {
             string msg = "";
-
-
-            if (model.Name == null)
-            {
-                msg = "Name cannot be null!";
-                return Json(msg, JsonRequestBehavior.AllowGet);
-            }
-            else if (model.Name.Length > 50 || model.Description.Length > 100)
-            {
-                msg = "Name character(s) cannot be more than 50, also, Description character(s) cannot be more than 100!";
-                return Json(msg, JsonRequestBehavior.AllowGet);
-            }
-
-
             try
             {
-                if (model.Id > 0) //RECORD EXIST
+                Category objCate = new Category()
                 {
-                    var dbObj = repository.GetRecordById(model.Id);
-                    if (dbObj != null)
+                    Name = model.Name,
+                    Description = model.Description
+                };
+
+
+                if (ModelState.IsValid)
+                {
+                    var addRec = repository.AddInToTable(objCate);
+                    if (addRec != null)
                     {
-                        dbObj.Name = model.Name;
-                        dbObj.Description = model.Description;
-
-                        if (ModelState.IsValid)
-                        {
-                            var updateRec = repository.Update(dbObj);
-
-                            if (updateRec != null)
-                            {
-                                msg = updateRec.Name + " record update successfully!";
-                            }
-                            else
-                            {
-                                msg = dbObj.Name + " record update successfully!";
-                            }
-                        }
-                        else
-                        {
-                            msg = "Update failed: Error 100 --> Invalid entry!";
-                        }
+                        TempData["Msg"] = objCate.Name + " added to the database!";
                     }
                     else
                     {
-                        msg = "Record does not exist anymore!";
+                        TempData["Msg"] = objCate.Name + " was not added to the database!";
                     }
-
                 }
-                else //NEW CATEGORY
+                else
                 {
-
-                    Category objCate = new Category()
-                    {
-                        Name = model.Name,
-                        Description = model.Description
-                    };
-
-
-                    if (ModelState.IsValid)
-                    {
-                        var addRec = repository.AddInToTable(objCate);
-                        if (addRec != null)
-                        {
-                            msg = objCate.Name + " added to the database!";
-                        }
-                        else
-                        {
-                            msg = objCate.Name + " was not added to the database!";
-                        }
-                    }
-                    else
-                    {
-                        msg = "Update failed: Error 100 --> Invalid entry!";
-                    }
-
+                    TempData["Msg"] = "Update failed: Error 100 --> Invalid entry!";
                 }
             }
             catch (Exception ex)
             {
+
                 if (ex.InnerException.Message != null)
                 {
-                    msg = "Please copy response and send to admin: \n" +
+                    TempData["Msg"] = "Please copy response and send to admin: \n" +
                                             ex.Message.ToString() + "\n" +
                                             ex.InnerException.Message.ToString();
+                    msg = TempData["Msg"].ToString();
                     return Json(msg, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    msg = "Please copy response and send to admin: \n" + ex.Message.ToString();
+                    TempData["Msg"] = "Please copy response and send to admin: \n" + ex.Message.ToString();
+                    msg = TempData["Msg"].ToString();
                     return Json(msg, JsonRequestBehavior.AllowGet);
                 }
             }
 
-
+            msg = TempData["Msg"].ToString();
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
 
-        public ActionResult AddEditCategory(int ID)
+
+        [HttpGet]
+        public ActionResult Edit(int id)
         {
-            string msg = "";
+            var model = repository.GetRecordById(id);
 
-            CategoryViewModel model = new CategoryViewModel();
-            try
+            if (model != null)
             {
-                if (ID > 0)
+                var category = new CategoryViewModel()
                 {
-                    var obj = repository.GetRecordById(ID);
-                    if (obj != null)
-                    {
-                        model.Id = obj.Id;
-                        model.Name = obj.Name;
-                        model.Description = obj.Description;
-                    }
-                }
+                    Id = model.Id,
+                    Name = model.Name,
+                    Description = model.Description
+                };
+
+                return View(category);
             }
-            catch (Exception ex)
+            else
             {
+                TempData["Msg"] = "RECORD NOT FOUND WITH SUPPLIED ID!";
+                return RedirectToAction("Index");
+            }
+        }
 
-                if (ex.InnerException.Message != null)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(CategoryViewModel model)
+        {
+
+
+            var objCate = new Category()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Description = model.Description
+            };
+
+            if (ModelState.IsValid)
+            {
+                var updateRecord = repository.Update(objCate);
+                if (updateRecord != null)
                 {
-                    msg = "Please copy response and send to admin: \n" +
-                                            ex.Message.ToString() + "\n" +
-                                            ex.InnerException.Message.ToString();
+                    TempData["Msg"] = objCate.Name + " has been updated succssfully!";
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    msg = "Please copy response and send to admin: \n" + ex.Message.ToString();
+                    TempData["Msg"] = objCate.Name + " was not updated succssfully!";
                 }
-
-                return RedirectToAction("Category");
             }
-            ViewBag.Msg = msg;
-            return PartialView("AddEditCategory", model);
+            else
+            {
+                TempData["Msg"] = "Invalid Entries";
+            }
+
+
+            ViewBag.Msg = TempData["Msg"].ToString();
+            return View();
         }
+
+
 
         public JsonResult DeleteCategory(int ID)
         {

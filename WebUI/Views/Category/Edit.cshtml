@@ -1,0 +1,104 @@
+﻿@model WebUI.ViewModels.CategoryViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+<div id="bucket">
+    @if (Model != null)
+    {
+        <h2 id="guideBucket">Edit @Model.Name</h2>
+    }
+    else
+    {
+        <h2 id="guideBucket">Edit</h2>
+    }
+
+
+
+@if (ViewBag.msg != null)
+{
+    <p id="msg" style="display:none">@ViewBag.Msg</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="input-group">
+                    <div class="input-group-addon">[A-Z0-9]</div>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="input-group">
+                    <div class="input-group-addon">[A-Z0-9]</div>
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div style="text-align: center;" id="loaderDiv1">
+            <img src="~/Images/load.gif" width="80" height="80" class="img-circle img-thumbnail" />
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Update" id="btnUpdate" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#loaderDiv1").hide();
+
+        var Smsg = $("#msg").text();
+        if (Smsg != "") {
+            alert(Smsg);
+        }
+
+    })
+
+    $("#btnUpdate").click(function () {
+        debugger;
+        $("#loaderDiv1").show();
+
+        var frmData = $("#frmCategory").serialize();
+        var data = frmData;
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Category/Create",
+            data: data,
+            success: function (result) {
+                $("#loaderDiv").hide();
+                if (result.trim != "" || result.trim != null) { alert(result); }
+                window.location.href = "/Category/Index";
+            }
+        })
+    })
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

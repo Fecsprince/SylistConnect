@@ -5,13 +5,19 @@
 
 <div id="bucket">
 
+    <div id="guideBucket">
+        <h2>Category List</h2>
+    </div>
+
     @if (ViewBag.msg != null)
     {
-        <p id="msg" style="display:none">@ViewBag.msg</p>
+        <p id="msg" style="display:none">@ViewBag.Msg</p>
     }
 
     <br />
-    <input type="button" class="btn btn-primary" onclick="AddEdit(0)" value="New Category" />
+    <br />
+    <br />
+    <a href="@Url.Action("Create","Category")" class="btn btn-primary">New Category</a>
     <br />
     <br />
     @* TABLE BELLOW IS USED TO POPULATE ALL RECORD IN DB *@
@@ -42,7 +48,7 @@
                                 {*@
                             <td>
                                 <a href="#" class="btn btn-danger" onclick="ConfirmDeleteRecord(@item.Id)"><span class="glyphicon glyphicon-trash"></span> </a>
-                                <a href="#" class="btn btn-success" onclick="AddEdit(@item.Id)"><span class="glyphicon glyphicon-pencil"></span> </a>
+                                <a href="@Url.Action("Edit","Category", new {@id = item.Id })" class="btn btn-success"><span class="glyphicon glyphicon-pencil"></span> </a>
                             </td>
                             @* } *@
                         </tr>
@@ -56,29 +62,7 @@
 
 
 
-    @* MODAL BELLOW IS USED  FOR NEW/EDIT RECORD *@
-    <div class="modal fade" id="AddEditModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title text-center text-danger">
-                        Add new Category
-                    </h4>
-                </div>
-                <div class="modal-body" id="modalBody">
 
-                </div>
-                <div class="modal-footer">
-                    <div style="text-align: center; display: none;" id="loaderDiv">
-                        <img src="~/Images/load.gif" width="80" height="80" class="img-circle img-thumbnail" />
-                    </div>
-                    <a href="#" class="btn btn-danger" id="btnReset">Reset</a>
-                    <a href="#" class="btn btn-primary" id="btnCancle">Cancle</a>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
 
     <div class="modal fade" id="DeleteModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
@@ -109,7 +93,6 @@
 
 </div>
 <script src="~/Scripts/jquery-3.4.1.js"></script>
-
 <script>
     $(document).ready(function () {
 
@@ -117,32 +100,11 @@
         if (Smsg != "") {
             alert(Smsg);
         }
-
-        $("#btnReset").click(function () {
-            $("#Name").val("");
-            $("#Description").val("");
-        })
-
-        $("#btnCancle").click(function () {
-            $("#AddEditModal").modal("hide");
-        })
-
-    })
-
-
-    var AddEdit = function (id) {
-        $("#loaderDiv").show();
-        var url = "/Category/AddEditCategory?ID=" + id; //USED TO SEARCH ENTITY WITH ID
-
-        $("#modalBody").load(url, function () {  // LOAD THE CONTENT FROM THE ACTION /ADDEDITRECORD
-            $("#loaderDiv").hide();
-            $("#AddEditModal").modal("show");
-        })
-    }
-
+    });
 
 
     var ConfirmDeleteRecord = function (id) {
+        debugger
         $("#ID").val(id);
         $("#DeleteModal").modal("show");
     }
@@ -153,7 +115,6 @@
         var Id = $("#ID").val();
 
         $.ajax({
-
             type: "POST",
             url: "/Category/DeleteCategory",
             data: { ID: Id },
@@ -161,16 +122,14 @@
                 if (result == "1") {
                     $("#row_" + Id).remove();
                     alert("Record deleted successfully!");
-                    window.location.href = "/Category/Category";
+                    window.location.href = "/Category/Index";
                 }
                 else {
                     alert("Record not not deleted!");
-                    window.location.href = "/Category/Category";
+                    window.location.href = "/Category/Index";
                 }
             }
         })
-
-
     }
 
 </script>

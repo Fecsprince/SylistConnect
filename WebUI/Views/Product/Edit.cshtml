@@ -1,0 +1,124 @@
+﻿@model WebUI.ViewModels.ProductViewModel
+
+@{
+    ViewBag.Title = "Edit Product";
+}
+<div id="bucket">
+    <p style="display:none" id="msg">@ViewBag.Msg</p>
+
+    <h2 id="#guideBucket">Edit Product</h2>
+
+
+    @using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.HiddenFor(model => model.Id)
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-shopping-cart"></span></div>
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-grain"></span></div>
+                        @Html.DropDownListFor(model => model.CategoryID, new SelectList(ViewBag.Categories, "Id", "Name"), "Select Category", new { @class = "form-control" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-usd"></span></div>
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-tree-deciduous"></span></div>
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Image1, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-picture"></span></div>
+                        <input type="file" id="Image1" name="Image1" class="form-control" />
+                        @*@Html.EditorFor(model => model.Image1, new { htmlAttributes = new { @class = "form-control" } })*@
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Image1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Image2, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <div class="input-group-addon"><span class="glyphicon glyphicon-picture"></span></div>
+                        <input type="file" id="Image2" name="Image2" class="form-control" />
+                        @*@Html.EditorFor(model => model.Image2, new { htmlAttributes = new { @class = "form-control" } })*@
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Image2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div style="text-align: center;" id="loaderDiv1">
+                <img src="~/Images/load.gif" width="80" height="80" class="img-circle img-thumbnail" />
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#loaderDiv1").hide();
+
+        var Smsg = $("#msg").text();
+        if (Smsg != "") {
+            alert(Smsg);
+        }
+
+    })
+
+    $("#btnSave").click(function () {
+        debugger;
+        $("#loaderDiv1").show();
+    })
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -3,9 +3,70 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - SYLIST</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+
+    <style type="text/css">
+        body {
+            font-family: Georgia, Cochin, Cambria, Times, Times New Roman, serif;
+            background: url('../../Images/Barber.png') no-repeat fixed;
+            background-size: cover;
+            font-size: 16px;
+        }
+
+        #bucket {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: floralwhite;
+            border-radius: 10px 10px;
+            box-shadow: rgba(0,0,0,3) 10px 10px;
+        }
+
+        #guideBucket {
+            padding: 2px 10px 5px 5px;
+            margin-top: 10px;
+            background-color: white;
+            border-radius: 10px 10px;
+            opacity: 0.9;
+            text-align: justify;
+        }
+
+        footer {
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+            border-radius: 10px 10px;
+            background-color: slategray;
+            font-size: 18px;
+            color: white;
+        }
+
+        thead {
+            background-color: greenyellow;
+            color: black;
+        }
+
+        th {
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tfoot {
+            background-color: darkblue;
+            color: white;
+            text-emphasis: filled;
+        }
+    </style>
+    <!-- fevicon -->
+    <link rel="icon" href="~/Images/SoftKonnectLogo3.png" type="image/gif" />
+
+
+
 
 </head>
 <body>
@@ -33,7 +94,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - SYLIST Project</p>
         </footer>
     </div>
 
